@@ -8,13 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.ecommerce.Adaptor.BrandsAdapter
+import com.example.ecommerce.Adaptor.ProductsAdapter
 import com.example.ecommerce.Adaptor.SliderAdaptor
 import com.example.ecommerce.databinding.ActivityDashboardBinding
+import com.example.ecommerce.models.Products
 import com.example.ecommerce.models.SliderModel
 import com.example.ecommerce.viewmodel.MainViewModel
 
@@ -33,6 +36,7 @@ class Dashboard_activity : AppCompatActivity() {
         binding.recyclerView.adapter = brandsAdapter
         binding.progressBarCat.visibility = View.VISIBLE
         binding.progressBarBanner.visibility=View.VISIBLE
+        binding.progressBarRecommendation.visibility=View.VISIBLE
         viewModel.brands.observe(this)
         {
 
@@ -49,8 +53,16 @@ class Dashboard_activity : AppCompatActivity() {
             binding.progressBarBanner.visibility = View.GONE
 
         }
+        viewModel.products.observe(this)
+        {
+            data->setrecommendation(data)
+            Log.d("fire", data.toString())
+            binding.progressBarRecommendation.visibility = View.GONE
+
+        }
         viewModel.loadSliders()
         viewModel.loadBrands()
+        viewModel.loadProducts()
     }
 
     private fun setupBanners(images: List<SliderModel>) {
@@ -69,5 +81,11 @@ class Dashboard_activity : AppCompatActivity() {
             visibility = if (images.size > 1) View.VISIBLE else View.GONE
             if (images.size > 1) attachTo(viewPager2 = binding.viewpaggerslider)
         }
+    }
+    private fun setrecommendation(items: MutableList<Products>)
+    {
+        binding.recyclerViewRecommendatioin.layoutManager=GridLayoutManager(this,2)
+    binding.recyclerViewRecommendatioin.adapter=ProductsAdapter(items)
+
     }
 }
