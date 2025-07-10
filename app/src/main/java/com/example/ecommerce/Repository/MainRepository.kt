@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.ecommerce.models.BrandModel
+import com.example.ecommerce.models.SliderModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -12,7 +13,11 @@ import com.google.firebase.database.ValueEventListener
 class MainRepository {
 private val firebaseDatabase=FirebaseDatabase.getInstance()
     private val _brands= MutableLiveData<MutableList<BrandModel>>()
-     val brands:LiveData<MutableList<BrandModel>> get()=_brands
+    private val _sliders= MutableLiveData<MutableList<SliderModel>>()
+
+    val brands:LiveData<MutableList<BrandModel>> get()=_brands
+    val sliders:LiveData<MutableList<SliderModel>> get()=_sliders
+
     fun loadBrandes()
     {
         val ref=firebaseDatabase.getReference("Category")
@@ -34,6 +39,29 @@ private val firebaseDatabase=FirebaseDatabase.getInstance()
             }
 
         })
+    }
+    fun loadsliders()
+    {
+        val ref=firebaseDatabase.getReference("Banner")
+        ref.addValueEventListener(object :ValueEventListener
+        {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list= mutableListOf<SliderModel>()
+                for(child in snapshot.children)
+                {
+                    child.getValue(SliderModel::class.java)?.let {
+                        list.add(it)
+                    }
+                }
+                _sliders.postValue(list)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase", "Error: ${error.message}")
+            }
+
+        })
+
     }
 
 }
