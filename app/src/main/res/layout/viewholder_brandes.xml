@@ -3,11 +3,12 @@
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:padding="2dp"
+
     android:layout_marginStart="8dp"
     android:layout_marginEnd="16dp"
     android:layout_marginTop="8dp"
     android:id="@+id/pic"
-    android:background="@drawable/gray_fullconrener"
+    android:background="@drawable/light_grey_fullcorners"
     >
 
 </ImageView>

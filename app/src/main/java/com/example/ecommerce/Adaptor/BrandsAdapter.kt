@@ -1,13 +1,17 @@
 package com.example.ecommerce.Adaptor
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.request.RequestOptions
 import com.example.ecommerce.R
+import com.example.ecommerce.databinding.SliderItemContainerBinding
 import com.example.ecommerce.databinding.ViewholderBrandesBinding
 import com.example.ecommerce.models.BrandModel
+import com.example.ecommerce.models.SliderModel
 
 class BrandsAdapter(private val items:MutableList<BrandModel>)
     :RecyclerView.Adapter<BrandsAdapter.Viewholder>(){
@@ -15,6 +19,7 @@ class BrandsAdapter(private val items:MutableList<BrandModel>)
     private var lastSelectedPosition: Int = -1
 
     inner class Viewholder(val binding: ViewholderBrandesBinding):RecyclerView.ViewHolder(binding.root)
+
 
     fun updatedata(newitems:MutableList<BrandModel>)
     {
@@ -24,6 +29,7 @@ class BrandsAdapter(private val items:MutableList<BrandModel>)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandsAdapter.Viewholder
     {
+
         val binding=ViewholderBrandesBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -40,8 +46,7 @@ class BrandsAdapter(private val items:MutableList<BrandModel>)
             .into(holder.binding.pic)
 
         holder.binding.root.setOnClickListener {
-            val clickedPosition = holder.adapterPosition
-            if (clickedPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+            val clickedPosition = position
 
             if (selectedPosition != clickedPosition) {
                 lastSelectedPosition = selectedPosition
@@ -56,7 +61,7 @@ class BrandsAdapter(private val items:MutableList<BrandModel>)
 
 
         holder.binding.pic.setBackgroundResource(
-            if (position==selectedPosition) 0 else R.drawable.gray_fullconrener
+            if (position==selectedPosition) 0 else R.drawable.light_grey_fullcorners
         )
 
 
